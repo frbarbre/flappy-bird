@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -13,14 +14,18 @@ public class GameController : MonoBehaviour
 
     public GameObject player;
 
+    public float score = 0;
+
+    public TextMeshProUGUI scoreText;
+
     void Start()
     {
-
+        scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        scoreText.text = score.ToString();
     }
 }

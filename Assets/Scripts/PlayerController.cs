@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         if (gameController.currentGameState == GameController.GameState.Playing)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0))
             {
                 // Reset the vertical velocity before applying the jump force
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
@@ -55,6 +55,14 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Death")
         {
             KillPlayer();
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Point" && gameController.currentGameState == GameController.GameState.Playing)
+        {
+            gameController.score++;
         }
     }
 
