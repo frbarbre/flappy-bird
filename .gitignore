@@ -50,3 +50,6 @@ ExportedObj/
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+mac.app
+/windows
