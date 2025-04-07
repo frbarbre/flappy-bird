@@ -2,25 +2,20 @@ using UnityEngine;
 
 public class PipeSpawner : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-    public enum SpawnDirection
-    {
-        Top,
-        Bottom
-    }
-
     public GameObject pipePrefab;
     public float spawnRate = 2f;
     private float timer = 0f;
 
-    public float maxY = 11f;
-    public float minY = 4f;
+    // Gap size between pipes (vertical space for the bird to fly through)
+    public float gapSize = 4f;
 
-    // Added new variable to determine spawn position
+    // Range for the gap's vertical position
+    public float maxGapY = 3f;
+    public float minGapY = -3f;
+
+    // Right edge of the screen for spawning
     private float rightEdge;
 
-    public SpawnDirection spawnDirection = SpawnDirection.Top;
     private GameController gameController;
 
     void Start()
@@ -38,27 +33,34 @@ public class PipeSpawner : MonoBehaviour
             timer += Time.deltaTime;
             if (timer > spawnRate)
             {
-                SpawnPipe();
+                SpawnPipePair();
                 timer = 0f;
             }
         }
     }
 
-    void SpawnPipe()
+    void SpawnPipePair()
     {
-        if (spawnDirection == SpawnDirection.Top)
-        {
-            float randomY = Random.Range(minY, maxY);
-            // Spawn pipe from the top (flipped 180 degrees) at the right edge
-            Instantiate(pipePrefab, new Vector3(rightEdge, randomY, 0), Quaternion.Euler(0, 0, 180f));
-            spawnDirection = SpawnDirection.Bottom;
-        }
-        else
-        {
-            float randomY = Random.Range(minY * -1, maxY * -1);
-            // Spawn pipe from the bottom (normal orientation) at the right edge
-            Instantiate(pipePrefab, new Vector3(rightEdge, randomY, 0), Quaternion.identity);
-            spawnDirection = SpawnDirection.Top;
-        }
+        // Random position for the center of the gap
+        float gapCenter = Random.Range(minGapY, maxGapY);
+
+        // We need to know the height of our pipe prefab to position correctly
+        // This assumes you've measured the height of your pipe prefab
+        float pipeHeight = 10f; // Adjust this value based on your actual pipe prefab height
+
+        // Position the top pipe so its bottom edge is at gapCenter + halfGapSize
+        float topPipeY = gapCenter + gapSize + (pipeHeight / 2);
+
+        // Position the bottom pipe so its top edge is at gapCenter - halfGapSize
+        float bottomPipeY = gapCenter - gapSize - (pipeHeight / 2);
+
+        // Create top pipe (flipped 180 degrees)
+        Instantiate(pipePrefab, new Vector3(rightEdge, topPipeY, 0), Quaternion.Euler(0, 0, 180f));
+
+        // Create bottom pipe (normal orientation)
+        GameObject bottomPipe = Instantiate(pipePrefab, new Vector3(rightEdge, bottomPipeY, 0), Quaternion.identity);
+
+        GameObject bottomPipeTrigger = bottomPipe.transform.Find("PointTrigger").gameObject;
+        Destroy(bottomPipeTrigger);
     }
 }

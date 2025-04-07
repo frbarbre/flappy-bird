@@ -2568,6 +2568,14 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5950745342690575020, guid: 51eee233f045a436ab49709f30676ae4, type: 3}
+      propertyPath: maxGapY
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5950745342690575020, guid: 51eee233f045a436ab49709f30676ae4, type: 3}
+      propertyPath: minGapY
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5950745342690575020, guid: 51eee233f045a436ab49709f30676ae4, type: 3}
       propertyPath: spawnRate
       value: 2
       objectReference: {fileID: 0}
